@@ -81,6 +81,7 @@ function timerHandler(id) {
       markCompleted(id);
       timer = null;
       renderTasks();
+      startBreak();
     }
   }
   
@@ -100,5 +101,25 @@ function timerHandler(id) {
     tasks[taskIndex].completed = true;
   }
   
- 
+  function startBreak() {
+    time = 6;
+    taskName.textContent = "Break";
+    renderTime();
+    timerBreak = setInterval(() => {
+      timerBreakHandler();
+    }, 1000);
+  }
+  
+  function timerBreakHandler() {
+    time--;
+    renderTime();
+  
+    if (time === 0) {
+      clearInterval(timerBreak);
+      current = null;
+      timerBreak = null;
+      taskName.textContent = "";
+      renderTasks();
+    }
+  }
   
