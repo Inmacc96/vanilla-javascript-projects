@@ -45,7 +45,7 @@ function renderTasks() {
   }); // Array de strings con la estrucutra html
 
   const tasksContainer = document.querySelector("#tasks");
-  tasksContainer.innerHTML = html.join(''); //Unimos todos los strings del array por un espacio vacío
+  tasksContainer.innerHTML = html.join(""); //Unimos todos los strings del array por un espacio vacío
 
   const startButtons = document.querySelectorAll(".task .start-button");
 
@@ -61,7 +61,7 @@ function renderTasks() {
 }
 
 function startButtonHandler(id) {
-  time = 25* 60; // 25 min en segundos
+  time = 25 * 60; // 25 min en segundos
   current = id;
   const taskIndex = tasks.findIndex((task) => task.id === id);
   taskName.textContent = tasks[taskIndex].title;
@@ -72,54 +72,52 @@ function startButtonHandler(id) {
   }, 1000);
 }
 
-
 function timerHandler(id) {
-    time--;
-    renderTime();
-    if (time === 0) {
-      clearInterval(timer);
-      markCompleted(id);
-      timer = null;
-      renderTasks();
-      startBreak();
-    }
+  time--;
+  renderTime();
+  if (time === 0) {
+    clearInterval(timer);
+    markCompleted(id);
+    timer = null;
+    renderTasks();
+    startBreak();
   }
-  
-  function renderTime() {
-    const timeDiv = document.querySelector("#time #value");
-    const minutes = parseInt(time / 60);
-    const seconds = parseInt(time % 60);
-  
-    timeDiv.textContent = `${minutes < 10 ? "0" : ""}${minutes}:${
-      seconds < 10 ? "0" : ""
-    }${seconds}`;
+}
+
+function renderTime() {
+  const timeDiv = document.querySelector("#time #value");
+  const minutes = parseInt(time / 60);
+  const seconds = parseInt(time % 60);
+
+  timeDiv.textContent = `${minutes < 10 ? "0" : ""}${minutes}:${
+    seconds < 10 ? "0" : ""
+  }${seconds}`;
+}
+
+function markCompleted(id) {
+  const taskIndex = tasks.findIndex((task) => task.id === id);
+  console.log(tasks, id, tasks[taskIndex]);
+  tasks[taskIndex].completed = true;
+}
+
+function startBreak() {
+  time = 6;
+  taskName.textContent = "Break";
+  renderTime();
+  timerBreak = setInterval(() => {
+    timerBreakHandler();
+  }, 1000);
+}
+
+function timerBreakHandler() {
+  time--;
+  renderTime();
+
+  if (time === 0) {
+    clearInterval(timerBreak);
+    current = null;
+    timerBreak = null;
+    taskName.textContent = "";
+    renderTasks();
   }
-  
-  function markCompleted(id) {
-    const taskIndex = tasks.findIndex((task) => task.id === id);
-    console.log(tasks, id, tasks[taskIndex]);
-    tasks[taskIndex].completed = true;
-  }
-  
-  function startBreak() {
-    time = 6;
-    taskName.textContent = "Break";
-    renderTime();
-    timerBreak = setInterval(() => {
-      timerBreakHandler();
-    }, 1000);
-  }
-  
-  function timerBreakHandler() {
-    time--;
-    renderTime();
-  
-    if (time === 0) {
-      clearInterval(timerBreak);
-      current = null;
-      timerBreak = null;
-      taskName.textContent = "";
-      renderTasks();
-    }
-  }
-  
+}
