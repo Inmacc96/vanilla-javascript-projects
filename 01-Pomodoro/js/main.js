@@ -18,3 +18,11 @@ const createTask = (value) => {
   tasks.unshift(newTask) // Agrega el objeto newTask al principio del array
 };
 
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (itTask.value !== "") {
+    createTask(itTask.value);
+    itTask.value = "";
+  }
+});
