@@ -71,3 +71,34 @@ function startButtonHandler(id) {
     timerHandler(id);
   }, 1000);
 }
+
+
+function timerHandler(id) {
+    time--;
+    renderTime();
+    if (time === 0) {
+      clearInterval(timer);
+      markCompleted(id);
+      timer = null;
+      renderTasks();
+    }
+  }
+  
+  function renderTime() {
+    const timeDiv = document.querySelector("#time #value");
+    const minutes = parseInt(time / 60);
+    const seconds = parseInt(time % 60);
+  
+    timeDiv.textContent = `${minutes < 10 ? "0" : ""}${minutes}:${
+      seconds < 10 ? "0" : ""
+    }${seconds}`;
+  }
+  
+  function markCompleted(id) {
+    const taskIndex = tasks.findIndex((task) => task.id === id);
+    console.log(tasks, id, tasks[taskIndex]);
+    tasks[taskIndex].completed = true;
+  }
+  
+ 
+  
