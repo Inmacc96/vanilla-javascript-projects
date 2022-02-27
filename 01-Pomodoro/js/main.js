@@ -8,14 +8,17 @@ const bAdd = document.querySelector("#bAdd");
 const itTask = document.querySelector("#itTask");
 const form = document.querySelector("#form");
 
+renderTime();
+renderTasks();
+
 form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (itTask.value !== "") {
-      createTask(itTask.value);
-      itTask.value = "";
-      renderTasks();
-    }
-  });
+  e.preventDefault();
+  if (itTask.value !== "") {
+    createTask(itTask.value);
+    itTask.value = "";
+    renderTasks();
+  }
+});
 
 function createTask(value) {
   const newTask = {
@@ -25,7 +28,7 @@ function createTask(value) {
   };
 
   tasks.unshift(newTask); // Agrega el objeto newTask al principio del array
-};
+}
 
 function renderTasks() {
   const html = tasks.map((task) => {
@@ -34,15 +37,37 @@ function renderTasks() {
                 <div class="completed">${
                   task.completed
                     ? `<span class="done">Done</span>`
-                    : `<button class="start-button" data-id="${task.id}>Start</button>`
+                    : `<button class="start-button" data-id="${task.id}">Start</button>`
                 }</div>
                 <div class="title">${task.title}</div>
             </div>
         `;
   }); // Array de strings con la estrucutra html
 
-  const tasksContainer = document.querySelector('#tasks')
-  tasksContainer.innerHTML = html.join(); //Unimos todos los strings del array por un espacio vacío
-};
+  const tasksContainer = document.querySelector("#tasks");
+  tasksContainer.innerHTML = html.join(''); //Unimos todos los strings del array por un espacio vacío
 
+  const startButtons = document.querySelectorAll(".task .start-button");
 
+  startButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      if (!timer) {
+        const id = button.getAttribute("data-id");
+        startButtonHandler(id);
+        button.textContent = "In progress ...";
+      }
+    });
+  });
+}
+
+function startButtonHandler(id) {
+  time = 25* 60; // 25 min en segundos
+  current = id;
+  const taskIndex = tasks.findIndex((task) => task.id === id);
+  taskName.textContent = tasks[taskIndex].title;
+
+  renderTime();
+  timer = setInterval(() => {
+    timerHandler(id);
+  }, 1000);
+}
