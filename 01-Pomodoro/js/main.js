@@ -8,7 +8,16 @@ const bAdd = document.querySelector("#bAdd");
 const itTask = document.querySelector("#itTask");
 const form = document.querySelector("#form");
 
-const createTask = (value) => {
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (itTask.value !== "") {
+      createTask(itTask.value);
+      itTask.value = "";
+      renderTasks();
+    }
+  });
+
+function createTask(value) {
   const newTask = {
     id: (Math.random() * 100).toString(36).slice(3),
     title: value,
@@ -18,7 +27,7 @@ const createTask = (value) => {
   tasks.unshift(newTask); // Agrega el objeto newTask al principio del array
 };
 
-const renderTasks = () => {
+function renderTasks() {
   const html = tasks.map((task) => {
     return `
             <div class="task">
@@ -36,11 +45,4 @@ const renderTasks = () => {
   tasksContainer.innerHTML = html.join(); //Unimos todos los strings del array por un espacio vacío
 };
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  if (itTask.value !== "") {
-    createTask(itTask.value);
-    itTask.value = "";
-    renderTasks();
-  }
-});
+
